@@ -15,15 +15,15 @@ class MultiDimension:
                     valindex += 1
             self.valdictlist.append(valdict)
         self.extendnum = 0
-        for t in self.validictlist:
+        for t in self.valdictlist:
             self.extendnum += len(t)
-        self.trainextattr = extend(self, cateattr)
+        self.trainextattr = self.extend(cateattr)
 
     def gettrainextattr(self):
         return self.trainextattr
 
     def gettestextattr(self, cateattr):
-        return extend(self, cateattr)
+        return self.extend(cateattr)
 
     def extend(self, cateattr):
         instancenum = len(cateattr)

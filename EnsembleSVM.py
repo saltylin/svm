@@ -1,9 +1,10 @@
 from numpy import ndarray
+from LinearSVM import *
 
 class EnsembleSVM:
     def __init__(self, trainattr, label, SVMClass):
         labeldict = {}
-        for i in range(label):
+        for i in range(len(label)):
             tmplabel = label[i]
             if tmplabel in labeldict:
                 labeldict[tmplabel].append(i)

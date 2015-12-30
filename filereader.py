@@ -14,17 +14,20 @@ def readfile(filename):
             cateattrnum += 1
     istrainingfile = True if attrtype[-1] == 2 else False
     data = f.readlines()
+    f.close()
     numattr = zeros((len(data), numattrnum))
     cateattr = []
+    itemid = []
     if istrainingfile:
         label = []
     index = 0
     for line in data:
         attrvalues = line.strip().split(',')
+        itemid.append(int(attrvalues[0]))
         i, j = 0, 0
-        k = 0
+        k = 1
         singlecateattr = []
-        while i < numattrnum and j < cateattrnum:
+        while i < numattrnum or j < cateattrnum:
             val = attrvalues[k]
             if attrtype[k] == 0:
                 numattr[index][i] = float(val) if val != '' else 0.0
@@ -38,9 +41,9 @@ def readfile(filename):
             label.append(int(attrvalues[-1]))
         index += 1
     if istrainingfile:
-        return numattr, cateattr, label
+        return itemid, numattr, cateattr, label
     else:
-        return numattr, cateattr
+        return itemid, numattr, cateattr
 
 def analyzetype(attrname):
     numattrstr = 'Product_Info_4, Ins_Age, Ht, Wt, BMI, Employment_Info_1, Employment_Info_4, Employment_Info_6, Insurance_History_5, Family_Hist_2, Family_Hist_3, Family_Hist_4, Family_Hist_5, Medical_History_1, Medical_History_10, Medical_History_15, Medical_History_24, Medical_History_32'
@@ -50,7 +53,7 @@ def analyzetype(attrname):
         name = t[1:-1]
         if name in numattrnameset:
             attrtype.append(0)
-        elif name == 'response':
+        elif name == 'Response':
             attrtype.append(2)
         else:
             attrtype.append(1)
