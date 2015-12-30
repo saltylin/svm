@@ -3,6 +3,7 @@ from numpy import *
 def readfile(filename):
     f = open(filename)
     attrname = f.readline().strip().split(',')
+    attrname = attrname[1:]
     #determine the types of all attributes, i.e., numeric (0), categorical (1) and response (2)
     attrtype = analyzetype(attrname)
     numattrnum = 0
@@ -12,6 +13,7 @@ def readfile(filename):
             numattrnum += 1
         elif t == 1:
             cateattrnum += 1
+    ###############3
     istrainingfile = True if attrtype[-1] == 2 else False
     data = f.readlines()
     f.close()
@@ -25,10 +27,10 @@ def readfile(filename):
         attrvalues = line.strip().split(',')
         itemid.append(int(attrvalues[0]))
         i, j = 0, 0
-        k = 1
+        k = 0
         singlecateattr = []
         while i < numattrnum or j < cateattrnum:
-            val = attrvalues[k]
+            val = attrvalues[k + 1]
             if attrtype[k] == 0:
                 numattr[index][i] = float(val) if val != '' else 0.0
                 i += 1

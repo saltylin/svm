@@ -1,11 +1,12 @@
 from numpy import *
 from SVM import *
 
-class LinearSVM(SVM):
-    def __init__(self, trainattr, label, comid, label1, label2):
+class WeightedLinearSVM(SVM):
+    def __init__(self, trainattr, label, comid, label1, label2, weight):
         SVM.__init__(self, trainattr, label, comid, label1, label2)
+        self.weight = weight
         self.coe = 0.01
-        self.T = int(10 * self.instancenum)
+        self.T = int(1 * self.instancenum)
         self.w = zeros(self.attrnum)
         self.b = 0.0
         self.training()
@@ -15,11 +16,12 @@ class LinearSVM(SVM):
             randomindex = random.randint(self.instancenum)
             yt = 1.0 / (self.coe * t)
             trainitem = self.trainattr[self.comid[randomindex]]
+            weight = self.weight[self.comid[randomindex]] * len(self.trainattr)
             innerproduct = dot(self.w, trainitem)
             tmplabel = self.labeldict[self.label[self.comid[randomindex]]]
             if innerproduct * tmplabel < 1:
-                self.w = (1.0 - yt * self.coe) * self.w + yt * tmplabel * trainitem
-                self.b = (1.0 - yt * self.coe) * self.b + yt * tmplabel
+                self.w = (1.0 - yt * self.coe) * self.w + yt * tmplabel * trainitem * weight
+                self.b = (1.0 - yt * self.coe) * self.b + yt * tmplabel * weight
             else:
                 self.w = (1.0 - yt * self.coe) * self.w
                 self.b = (1.0 - yt * self.coe) * self.b
