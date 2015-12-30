@@ -35,7 +35,7 @@ def readfile(filename):
             k += 1
         cateattr.append(singlecateattr)
         if istrainingfile:
-            label.append(attrvalues[-1])
+            label.append(int(attrvalues[-1]))
         index += 1
     if istrainingfile:
         return numattr, cateattr, label
