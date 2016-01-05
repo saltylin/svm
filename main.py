@@ -4,6 +4,7 @@ from filereader import *
 from LinearSVM import *
 from extdim import *
 from WeightedModel import *
+from LDA import *
 
 def main():
     filename = '../resource/train.csv'
@@ -23,10 +24,17 @@ def main():
     testextattr = multidim.gettestextattr(testcateattr)
     trainattr = append(trainnumattr, trainextattr, axis = 1)
     testattr = append(testnumattr, testextattr, axis = 1)
-    model = WeightedModel(trainattr, trainlabel)
+    LDAcoe = LDA(trainattr, trainlabel)
+    LDAtrainattr = conpress(trainattr, LDAcoe)
+    LDAtestattr = conpress(testattr, LDAcoe)
+    for i in range(20):
+        print LDAtrainattr[i]
+    import sys
+    sys.exit(1)
+    model = WeightedModel(LDAtrainattr, trainlabel)
     right = 0
     for i in range(testnum):
-        p = model.predict(testattr[i])
+        p = model.predict(LDAtestattr[i])
         if p == testlabel[i]:
             right += 1
     accuracy = float(right) / testnum
